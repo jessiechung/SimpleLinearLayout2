@@ -5,11 +5,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.os.Build;
@@ -63,13 +65,35 @@ public class MainActivity extends ActionBarActivity {
             //View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         	
         	LinearLayout ll = new LinearLayout(getActivity());
+        	ll.setOrientation(LinearLayout.VERTICAL);
+        	ll.setPadding(15, 15, 15, 15);
+
         	EditText toEditText = new EditText(getActivity());
+        	toEditText.setHint("To");
+        	
         	EditText sendEditText = new EditText(getActivity());
+        	sendEditText.setHint("Subject");
+        	
         	EditText msgEditText = new EditText(getActivity());
+        	msgEditText.setHint("Message");
+        	msgEditText.setGravity(Gravity.TOP);
         	
         	ll.addView(toEditText);
         	ll.addView(sendEditText);
-        	ll.addView(msgEditText);
+        	ll.addView(msgEditText);  // 放入LinearLayout裡
+        	
+        	// EditText須先放入LinearLayout裡，才可取出LayoutParams去做設定修改
+        	// 因為Layout是使用LinearLayout，故須將msgEditText.getLayoutParams()轉成LinearLayout.LayoutParams
+        	LinearLayout.LayoutParams msgParams = (LinearLayout.LayoutParams) msgEditText.getLayoutParams(); // 取出LayoutParams
+        	msgParams.weight = 1;
+        	
+        	Button button = new Button(getActivity());
+			button.setText("Send");
+			ll.addView(button);
+			
+			LinearLayout.LayoutParams buttonParams = (LinearLayout.LayoutParams) button.getLayoutParams();
+			buttonParams.width = LinearLayout.LayoutParams.WRAP_CONTENT;
+			buttonParams.gravity = Gravity.RIGHT;
         	
         	return ll;
             //return rootView;
